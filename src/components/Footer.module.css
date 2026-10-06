@@ -1,0 +1,130 @@
+.footer {
+  background-color: var(--black);
+  color: var(--white);
+  padding-top: 60px;
+}
+
+.footerTop {
+  padding-bottom: 40px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.brandTitle {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--brand-red);
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+}
+
+.brandSubtitle {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--brand-blue);
+  letter-spacing: 1.5px;
+}
+
+.aboutText {
+  color: #a0a0a0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.colTitle {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.colTitle::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 3px;
+  background-color: var(--brand-red);
+}
+
+.linksList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.linksList a {
+  color: #a0a0a0;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.linksList a:hover {
+  color: var(--brand-red);
+}
+
+.contactList {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.contactList li {
+  display: flex;
+  gap: 12px;
+  color: #a0a0a0;
+  font-size: 0.95rem;
+  align-items: flex-start;
+}
+
+.icon {
+  color: var(--brand-red);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.footerBottom {
+  background-color: #111111;
+  padding: 20px 0;
+  text-align: center;
+  color: #666666;
+  font-size: 0.9rem;
+}
+
+.socialRow {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: center;
+}
+.socialLinks {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.socialLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #a0a0a0;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+.socialLink:hover {
+  color: var(--primary-color, #B31932);
+}
+

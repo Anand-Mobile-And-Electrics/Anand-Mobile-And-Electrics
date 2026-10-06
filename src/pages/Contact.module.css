@@ -1,0 +1,123 @@
+.contactHero {
+  background-color: var(--white);
+  padding: 80px 0 40px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.contactSection {
+  padding: 80px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+
+.infoCol h2 {
+  font-size: 2rem;
+  color: var(--text-dark);
+  margin-bottom: 20px;
+}
+
+.infoDesc {
+  font-size: 1.1rem;
+  color: var(--text-grey);
+  margin-bottom: 40px;
+}
+
+.infoList {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.infoItem {
+  display: flex;
+  gap: 20px;
+}
+
+.iconWrap {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(185,43,58,0.1);
+  color: var(--brand-red);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.infoItem h4 {
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  margin-bottom: 5px;
+}
+
+.infoItem p {
+  color: var(--text-grey);
+  line-height: 1.6;
+}
+
+.formCol {
+  background: var(--white);
+  padding: 40px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.contactForm h3 {
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+  color: var(--text-dark);
+}
+
+.formGroup {
+  margin-bottom: 20px;
+}
+
+.formGroup label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.formGroup input,
+.formGroup select,
+.formGroup textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: var(--brand-red);
+  box-shadow: 0 0 0 3px rgba(185,43,58,0.1);
+}
+
+@media (max-width: 992px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mapSection {
+  padding: 60px 0;
+  background-color: var(--background-alt);
+}
+.mapContainer {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+

@@ -1,0 +1,73 @@
+.aboutHero {
+  background-color: var(--white);
+  padding: 80px 0 40px;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.aboutContent {
+  padding: 80px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.imageCol {
+  position: relative;
+}
+
+.storeImage {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.textCol h2 {
+  font-size: 2rem;
+  color: var(--brand-red);
+  margin-bottom: 24px;
+}
+
+.textCol p {
+  font-size: 1.1rem;
+  color: var(--text-grey);
+  margin-bottom: 20px;
+}
+
+.stats {
+  display: flex;
+  gap: 30px;
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.statBox {
+  display: flex;
+  flex-direction: column;
+}
+
+.statNum {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--brand-blue);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.statLabel {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-grey);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 992px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,101 @@
+.navbar {
+  background-color: var(--white);
+  padding: 15px 5%;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+}
+
+.navContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo {
+  height: 55px;
+  width: auto;
+  border-radius: var(--radius-sm);
+  object-fit: contain;
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+}
+
+.brandTitle {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--brand-red);
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+}
+
+.brandSubtitle {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--brand-blue);
+  letter-spacing: 1.5px;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.navLinks a {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  transition: color 0.2s ease;
+}
+
+.navLinks a:hover,
+.navLinks a.activeLink {
+  color: var(--brand-red);
+}
+
+.menuIcon {
+  display: none;
+  cursor: pointer;
+  color: var(--text-dark);
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .menuIcon {
+    display: block;
+  }
+
+  .navLinks {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--white);
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0;
+    gap: 25px;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    transition: all 0.3s ease-out;
+  }
+
+  .navLinks.active {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}

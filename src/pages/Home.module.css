@@ -1,0 +1,215 @@
+.hero {
+  background: var(--bg-gradient);
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(185,43,58,0.05) 0%, rgba(255,255,255,0) 70%);
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.heroContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  position: relative;
+  z-index: 1;
+}
+
+.heroContent {
+  flex: 1.2;
+  max-width: 650px;
+}
+
+.heroBadge {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: rgba(30,102,180,0.1);
+  color: var(--brand-blue);
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.heroTitle {
+  font-size: 4rem;
+  color: var(--text-dark);
+  margin-bottom: 24px;
+}
+
+.highlight {
+  color: var(--brand-red);
+}
+
+.heroText {
+  font-size: 1.25rem;
+  color: var(--text-grey);
+  margin-bottom: 40px;
+}
+
+.heroActions {
+  display: flex;
+  gap: 20px;
+}
+
+.btnIcon {
+  margin-left: 8px;
+}
+
+.heroImageWrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.heroImage {
+  width: 100%;
+  max-width: 450px;
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg);
+  transform: perspective(1000px) rotateY(-5deg);
+  transition: transform 0.5s ease;
+}
+
+.heroImage:hover {
+  transform: perspective(1000px) rotateY(0deg) scale(1.02);
+}
+
+.servicesSection {
+  background-color: var(--white);
+}
+
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+}
+
+.serviceCard {
+  background: var(--bg-main);
+  padding: 40px 30px;
+  border-radius: var(--radius-lg);
+  transition: all 0.3s ease;
+  border-top: 4px solid var(--brand-red);
+  display: flex;
+  flex-direction: column;
+}
+
+.serviceCard:nth-child(even) {
+  border-top-color: var(--brand-blue);
+}
+
+.serviceCard:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-lg);
+}
+
+.serviceIconWrap {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(185,43,58,0.1);
+  color: var(--brand-red);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.serviceCard:nth-child(even) .serviceIconWrap {
+  background-color: rgba(30,102,180,0.1);
+  color: var(--brand-blue);
+}
+
+.serviceCard h3 {
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  color: var(--text-dark);
+}
+
+.serviceCard p {
+  color: var(--text-grey);
+  margin-bottom: 25px;
+  flex: 1;
+}
+
+.serviceLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--brand-blue);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.serviceLink:hover {
+  color: var(--brand-red);
+}
+
+.ctaSection {
+  padding: 60px 0 100px;
+}
+
+.ctaBox {
+  background: linear-gradient(135deg, var(--brand-red) 0%, #8c1e2a 100%);
+  border-radius: var(--radius-lg);
+  padding: 60px 40px;
+  text-align: center;
+  color: var(--white);
+  box-shadow: var(--shadow-lg);
+}
+
+.ctaBox h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.ctaBox p {
+  font-size: 1.15rem;
+  margin-bottom: 30px;
+  opacity: 0.9;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 992px) {
+  .heroContainer {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .heroActions {
+    justify-content: center;
+  }
+
+  .heroTitle {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+
+  .heroActions {
+    flex-direction: column;
+  }
+}

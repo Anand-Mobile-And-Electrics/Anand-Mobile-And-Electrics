@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --brand-red: #B31932;
+  --brand-blue: #0082CA;
+  --brand-cyan: #00B8E6;
+  --brand-red-dark: #8c1225;
+  --brand-blue-dark: #006299;
+  
+  --text-dark: #4A4A4A;
+  --text-grey: #666666;
+  --text-light: #f5f5f5;
+  
+  --bg-main: #F8F9FA;
+  --bg-card: #FFFFFF;
+  --bg-gradient: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
+  
+  --white: #FFFFFF;
+  --black: #000000;
+  
+  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 15px 30px rgba(0,0,0,0.1);
+  
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-dark);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+*:focus-visible {
+  outline: 3px solid var(--brand-red);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background-color: var(--brand-red);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background-color: var(--brand-red-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background-color: var(--brand-blue);
+  color: var(--white);
+}
+
+.btn-secondary:hover {
+  background-color: var(--brand-blue-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--brand-red);
+  border: 2px solid var(--brand-red);
+}
+
+.btn-outline:hover {
+  background-color: var(--brand-red);
+  color: var(--white);
+}
+
+.section-title {
+  font-size: 2.5rem;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-grey);
+  text-align: center;
+  margin-bottom: 3rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+section {
+  padding: 80px 0;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
