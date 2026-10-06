@@ -58,7 +58,7 @@ const ServiceDetail = () => {
           <h3 style={{ marginBottom: '1rem' }}>Need this service?</h3>
           <p style={{ marginBottom: '2rem', color: '#666' }}>Visit our store in Sachin or contact us for more information.</p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/contact" className="btn btn-primary">Contact Us</Link>
+            <Link to="/contact" className="btn btn-primary" style={{ marginRight: '1rem' }}>Contact Us</Link>
             <Link to="/contact" className="btn btn-outline">Get Directions</Link>
           </div>
         </div>

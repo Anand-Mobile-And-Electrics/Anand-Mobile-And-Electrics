@@ -103,7 +103,7 @@ const Home = () => {
             <h2>Visit Anand Mobile & Electrics</h2>
             <p>11-12 Kaushal Park, Opposite Shivanjali Society, Talangpore Road, Sachin, Surat, Gujarat, India</p>
             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap', marginTop: '2rem' }}>
-              <Link to="/contact" className="btn btn-primary" style={{ backgroundColor: 'var(--white)', color: 'var(--brand-red)' }}>
+              <Link to="/contact" className="btn btn-primary" style={{ backgroundColor: 'var(--white)', color: 'var(--brand-red)', marginRight: '1rem' }}>
                 Get Directions
               </Link>
               <Link to="/contact" className="btn btn-outline" style={{ borderColor: 'var(--white)', color: 'var(--white)' }}>

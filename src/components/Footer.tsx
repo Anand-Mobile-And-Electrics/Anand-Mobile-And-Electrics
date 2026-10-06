@@ -69,7 +69,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <Phone size={18} className={styles.icon} />
-                  <span>+91 97255 69604 (Abhishek)</span>
+                  <span>+91 97255 69604 <em>(Pending Owner Confirmation)</em></span>
                 </li>
                 <li>
                   <Mail size={18} className={styles.icon} />
@@ -77,7 +77,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <Clock size={18} className={styles.icon} />
-                  <span>Everyday: 7:30 AM - 10:00 PM<br/>(Closed: 12:30 PM - 4:30 PM)</span>
+                  <span>Everyday: 7:30 AM - 10:00 PM<br/><em>(Pending Owner Confirmation)</em></span>
                 </li>
               </ul>
             </div>

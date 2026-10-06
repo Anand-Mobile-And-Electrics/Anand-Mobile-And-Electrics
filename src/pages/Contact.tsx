@@ -43,7 +43,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h4>Call Us</h4>
-                  <p>+91 97255 69604<br />(Ask for Abhishek)</p>
+                  <p>+91 97255 69604<br /><em>(Pending Owner Confirmation)</em></p>
                 </div>
               </div>
 
@@ -63,7 +63,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h4>Working Hours</h4>
-                  <p>Everyday: 7:30 AM - 10:00 PM<br />(Closed: 12:30 PM - 4:30 PM)</p>
+                  <p>Everyday: 7:30 AM - 10:00 PM<br /><em>(Pending Owner Confirmation)</em></p>
                 </div>
               </div>
             </div>
