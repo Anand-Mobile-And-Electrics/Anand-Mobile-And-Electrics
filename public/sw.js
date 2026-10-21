@@ -3,7 +3,9 @@
 // It deliberately does NOT cache cross-origin requests (e.g. Supabase API/
 // storage) so authenticated data and RLS are never served from a stale cache.
 
-const CACHE = 'anand-shell-v2';
+// Bump the shell cache whenever the application bundle or interaction behavior
+// changes so an installed PWA cannot keep serving an older UI indefinitely.
+const CACHE = 'anand-shell-v3';
 const SHELL = ['/', '/index.html', '/favicon.svg', '/manifest.webmanifest', '/logo.jpg'];
 importScripts('/precache-manifest.js');
 
