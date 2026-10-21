@@ -27,9 +27,10 @@ describe('spin wheel local repository', () => {
     expect(chooseOffer([offers[0]], 0)).toBeUndefined();
   });
 
-  it('provides six sample offers for the local preview without limiting future additions', () => {
+  it('provides six surprise offers for the store rewards', () => {
     expect(getOffers()).toHaveLength(6);
     expect(getOffers().every((offer) => offer.active)).toBe(true);
+    expect(getOffers().every((offer) => offer.label.startsWith('Surprise:'))).toBe(true);
   });
 
   it('keeps 30-day offer validity distinct from 45-day retention', () => {
