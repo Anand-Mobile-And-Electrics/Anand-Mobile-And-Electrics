@@ -1,0 +1,5 @@
+.pwaStatus { position: fixed; z-index: 20; inset: auto 1rem 1rem; display: flex; align-items: center; justify-content: center; gap: .65rem; padding: .7rem 1rem; border: 1px solid #bfdbfe; border-radius: .65rem; background: #eff6ff; color: #1e3a8a; box-shadow: 0 5px 18px #0f172a1f; font-size: .88rem; }
+.pwaStatus.offline { border-color: #fed7aa; background: #fff7ed; color: #9a3412; }
+.pwaStatus button { border: 0; border-radius: .35rem; padding: .35rem .6rem; background: #1d4ed8; color: #fff; cursor: pointer; }
+.pwaStatus button:last-child { background: transparent; color: inherit; font-size: 1.15rem; padding: .1rem .25rem; }
+@media (max-width: 560px) { .pwaStatus { inset: auto .65rem .65rem; font-size: .8rem; } }

@@ -5,17 +5,18 @@
 }
 
 .card {
-  background-color: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  background-color: var(--white);
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 .title {
   margin-top: 0;
   margin-bottom: 1.5rem;
   font-size: 1.25rem;
-  color: #111827;
+  color: var(--text-dark);
 }
 
 .scannerSection {
@@ -45,22 +46,21 @@
 
 .inputGroup input,
 .inputGroup select {
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
   font-size: 1rem;
 }
 
 .primaryButton {
-  background-color: #2563eb;
+  background-color: var(--brand-blue);
   color: white;
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   font-weight: 500;
   cursor: pointer;
   height: 38px;
-  margin-top: 22px; /* align with input */
   transition: background-color 0.2s;
 }
 
@@ -69,14 +69,14 @@
 }
 
 .secondaryButton {
-  background-color: #f3f4f6;
+  background-color: var(--text-light);
   color: #374151;
   border: 1px solid #d1d5db;
   padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, border-color .2s;
 }
 
 .secondaryButton:hover {
@@ -98,6 +98,7 @@
   border-radius: 4px;
   border-left: 4px solid #166534;
 }
+.muted { color: #64748b; }
 
 .formGrid {
   display: grid;
@@ -106,9 +107,14 @@
 }
 
 @media (max-width: 640px) {
+  .scannerRow { flex-direction: column; align-items: stretch; }
+  .scannerRow button { width: 100%; }
+  .primaryButton { height: auto; min-height: 42px; }
   .formGrid {
     grid-template-columns: 1fr;
   }
+  .formActions { flex-direction: column; }
+  .formActions button { width: 100%; }
 }
 
 .formActions {
@@ -117,11 +123,13 @@
   margin-top: 1.5rem;
 }
 
+.inputGroup input:focus, .inputGroup select:focus { border-color: var(--brand-blue); }
+
 .imagePreview {
   width: 100%;
   max-width: 300px;
   height: auto;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   margin-top: 0.5rem;
   border: 1px solid #d1d5db;
 }
@@ -137,7 +145,7 @@
 .productInfo {
   background-color: #f8fafc;
   padding: 1rem;
-  border-radius: 4px;
+  border-radius: var(--radius-md);
   border: 1px solid #e2e8f0;
   margin-bottom: 1.5rem;
 }

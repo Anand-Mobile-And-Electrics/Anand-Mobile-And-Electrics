@@ -70,12 +70,12 @@ const Services = () => {
           <div className={styles.whyGrid} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
             <div className={styles.whyCard} style={{ padding: '2rem', backgroundColor: 'white', borderRadius: '12px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
               <ShieldCheck size={40} style={{ color: 'var(--primary-color)', margin: '0 auto 1rem' }} />
-              <h4 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Multiple Services</h4>
+              <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Multiple Services</h3>
               <p style={{ color: '#666' }}>All your electronics, repairs, and digital needs in one convenient location.</p>
             </div>
             <div className={styles.whyCard} style={{ padding: '2rem', backgroundColor: 'white', borderRadius: '12px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
               <Clock size={40} style={{ color: 'var(--primary-color)', margin: '0 auto 1rem' }} />
-              <h4 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Professional Approach</h4>
+              <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Professional Approach</h3>
               <p style={{ color: '#666' }}>Technology-focused assistance and expert repairs you can rely on.</p>
             </div>
           </div>

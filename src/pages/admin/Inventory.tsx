@@ -1,19 +1,11 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../../lib/supabase';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import imageCompression from 'browser-image-compression';
 import { Html5QrcodeScanner } from 'html5-qrcode';
+import { listCategories, listBrands, findProductByBarcode, createProduct, adjustStock, uploadProductImage } from '../../services/inventory';
+import type { Category, Brand, Product, StockAdjustmentType } from '../../services/inventory';
 import styles from './Inventory.module.css';
 
-interface Category { id: string; name: string; }
-interface Brand { id: string; name: string; }
-interface Product {
-  id: string;
-  name: string;
-  barcode: string;
-  current_stock: number;
-  image_url: string;
-}
 
 const Inventory = () => {
   const { role } = useAuth();
@@ -24,7 +16,10 @@ const Inventory = () => {
   const [brands, setBrands] = useState<Brand[]>([]);
   
   const [isScanning, setIsScanning] = useState(false);
+  const scannerRef = useRef<Html5QrcodeScanner | null>(null);
+  const scanTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [message, setMessage] = useState({ text: '', type: '' });
+  const [catalogLoading, setCatalogLoading] = useState(true);
   
   // New Product State
   const [isNewProduct, setIsNewProduct] = useState(false);
@@ -38,19 +33,37 @@ const Inventory = () => {
 
   // Stock Adjustment State
   const [stockQty, setStockQty] = useState(1);
-  const [stockType, setStockType] = useState('receive');
+  const [stockType, setStockType] = useState<StockAdjustmentType>('receive');
   const [stockNote, setStockNote] = useState('');
 
-  useEffect(() => {
-    loadCategoriesAndBrands();
+  const loadCategoriesAndBrands = useCallback(async () => {
+    setCatalogLoading(true);
+    try {
+      const [cats, brnds] = await Promise.all([listCategories(), listBrands()]);
+      setCategories(cats); setBrands(brnds);
+    } catch {
+      setMessage({ text: 'Could not load categories/brands. Some options may be unavailable.', type: 'error' });
+    } finally {
+      setCatalogLoading(false);
+    }
   }, []);
 
-  const loadCategoriesAndBrands = async () => {
-    const { data: cats } = await supabase.from('categories').select('*').order('name');
-    const { data: brnds } = await supabase.from('brands').select('*').order('name');
-    if (cats) setCategories(cats);
-    if (brnds) setBrands(brnds);
-  };
+  useEffect(() => {
+    void loadCategoriesAndBrands();
+    // Ensure the camera/scanner is torn down if the component unmounts
+    // while scanning (prevents a leaked camera stream).
+    return () => {
+      if (scanTimeoutRef.current) clearTimeout(scanTimeoutRef.current);
+      scannerRef.current?.clear().catch(() => {});
+      scannerRef.current = null;
+    };
+  }, [loadCategoriesAndBrands]);
+
+  useEffect(() => {
+    return () => {
+      if (imagePreview) URL.revokeObjectURL(imagePreview);
+    };
+  }, [imagePreview]);
 
   const handleBarcodeSearch = async (code: string) => {
     setMessage({ text: '', type: '' });
@@ -64,13 +77,8 @@ const Inventory = () => {
       stopScanner();
     }
 
-    const { data, error } = await supabase
-      .from('products')
-      .select('*')
-      .eq('barcode', trimmed)
-      .maybeSingle();
-
-    if (error) {
+    let data: Product | null;
+    try { data = await findProductByBarcode(trimmed); } catch {
       setMessage({ text: 'Error looking up barcode', type: 'error' });
       return;
     }
@@ -89,38 +97,51 @@ const Inventory = () => {
   const startScanner = () => {
     setIsScanning(true);
     // HTML5 Qrcode Scanner needs a timeout to ensure the DOM element exists
-    setTimeout(() => {
+    scanTimeoutRef.current = setTimeout(() => {
+      scanTimeoutRef.current = null;
       const scanner = new Html5QrcodeScanner(
         "reader",
         { fps: 10, qrbox: { width: 250, height: 250 } },
         false
       );
-      
-      scanner.render(
+      scannerRef.current = scanner;
+
+      try { scanner.render(
         (decodedText) => {
-          scanner.clear();
+          scanner.clear().catch(() => {});
+          scannerRef.current = null;
           setIsScanning(false);
           handleBarcodeSearch(decodedText);
         },
-        () => {
+        (errorMessage) => {
           // Ignore frequent scanning errors (e.g. no barcode detected)
+          if (!/NotFoundException|No MultiFormat Readers/i.test(String(errorMessage))) {
+            setMessage({ text: 'Camera could not start. Check permission or use manual barcode entry.', type: 'error' });
+          }
         }
-      );
+      ); } catch (error) {
+        setIsScanning(false);
+        setMessage({ text: /secure|permission/i.test(String(error)) ? 'Camera permission was denied. Enter the barcode manually instead.' : 'Camera could not start. Use manual barcode entry.', type: 'error' });
+      }
     }, 100);
   };
 
   const stopScanner = () => {
+    // Properly tear down the scanner instance so the camera stream stops.
+    if (scanTimeoutRef.current) {
+      clearTimeout(scanTimeoutRef.current);
+      scanTimeoutRef.current = null;
+    }
+    scannerRef.current?.clear().catch(() => {});
+    scannerRef.current = null;
     setIsScanning(false);
-    // Note: Html5QrcodeScanner cleans itself up via UI buttons, 
-    // but a proper manual unmount logic requires keeping the instance.
-    // For simplicity, we just unmount the div using React conditional rendering, 
-    // though the library might log a warning.
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       setImageFile(file);
+      if (imagePreview) URL.revokeObjectURL(imagePreview);
       setImagePreview(URL.createObjectURL(file));
     }
   };
@@ -135,24 +156,16 @@ const Inventory = () => {
     setIsSubmitting(true);
     try {
       // 1. Insert product first (without image) to validate barcode/constraints
-      const { data: newProduct, error: insertError } = await supabase.from('products').insert({
+       const newProduct = await createProduct({
         name: newName,
         barcode: barcodeInput.trim() || null,
         description: newDesc,
         category_id: newCatId || null,
         brand_id: newBrandId || null
-      }).select().single();
-      
-      if (insertError) {
-        if (insertError.code === '23505') {
-           throw new Error('A product with this barcode already exists (possibly created concurrently).');
-        }
-        throw insertError;
-      }
+       });
 
-      let imageUrl = null;
-      let storagePath = null;
-      
+       let imageFailed = false;
+
       // 2. Upload image if provided, using product ID for safety
       if (imageFile && newProduct) {
         const options = {
@@ -161,37 +174,24 @@ const Inventory = () => {
           useWebWorker: true
         };
         const compressedFile = await imageCompression(imageFile, options);
-        
-        const fileExt = compressedFile.name.split('.').pop();
-        const filePath = `${newProduct.id}.${fileExt}`;
-        
-        const { error: uploadError } = await supabase.storage
-          .from('product-images')
-          .upload(filePath, compressedFile);
-          
-        if (uploadError) {
-          // Note: The product is created but image failed. 
+
+        // Derive extension from the actual (compressed) MIME type, not the name.
+        try {
+          const uploaded = await uploadProductImage(newProduct.id, compressedFile);
+          newProduct.image_url = uploaded.image_url;
+          newProduct.image_storage_path = uploaded.image_storage_path;
+        } catch (uploadError) {
+          imageFailed = true;
           console.error("Image upload failed", uploadError);
           setMessage({ text: 'Product created, but image upload failed.', type: 'error' });
-        } else {
-          const { data: urlData } = supabase.storage
-            .from('product-images')
-            .getPublicUrl(filePath);
-            
-          imageUrl = urlData.publicUrl;
-          storagePath = filePath;
-
-          // 3. Update product with image URL
-          await supabase.from('products')
-            .update({ image_url: imageUrl, image_storage_path: storagePath })
-            .eq('id', newProduct.id);
-            
-          newProduct.image_url = imageUrl;
-          newProduct.image_storage_path = storagePath;
         }
       }
-      
-      setMessage({ text: 'Product created successfully', type: 'success' });
+
+      // Only claim full success when the image step did not fail (otherwise the
+      // specific image-failure message above must stand).
+      if (!imageFailed) {
+        setMessage({ text: 'Product created successfully', type: 'success' });
+      }
       setIsNewProduct(false);
       setActiveProduct(newProduct);
       
@@ -211,32 +211,19 @@ const Inventory = () => {
   const handleAdjustStock = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!activeProduct) return;
-    
+    if (!Number.isInteger(stockQty) || stockQty < 1) {
+      setMessage({ text: 'Quantity must be a whole number of at least 1.', type: 'error' });
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      const { error } = await supabase.rpc('adjust_stock', {
-        p_product_id: activeProduct.id,
-        p_quantity: stockQty,
-        p_type: stockType,
-        p_reference: stockNote || null
-      });
-      
-      if (error) throw error;
-      
-      setMessage({ text: 'Stock updated successfully', type: 'success' });
+       const updatedProduct = await adjustStock({ productId: activeProduct.id, quantity: stockQty, type: stockType, note: stockNote });
+       setMessage({ text: 'Stock updated successfully', type: 'success' });
       setStockQty(1);
       setStockNote('');
       
-      // Refresh active product stock
-      const { data: updatedProduct } = await supabase
-        .from('products')
-        .select('*')
-        .eq('id', activeProduct.id)
-        .single();
-        
-      if (updatedProduct) {
-        setActiveProduct(updatedProduct);
-      }
+       setActiveProduct(updatedProduct);
       
     } catch (err: any) {
       setMessage({ text: err.message || 'Failed to adjust stock', type: 'error' });
@@ -250,6 +237,8 @@ const Inventory = () => {
     setIsNewProduct(false);
     setBarcodeInput('');
     setMessage({ text: '', type: '' });
+    setImagePreview('');
+    setImageFile(null);
   };
 
   return (
@@ -257,18 +246,21 @@ const Inventory = () => {
       <div className={styles.card}>
         <h2 className={styles.title}>Inventory Management</h2>
         
-        {message.text && (
-          <div className={message.type === 'error' ? styles.error : styles.success} style={{ marginBottom: '1rem' }}>
-            {message.text}
-          </div>
-        )}
+         {message.text && (
+           <div role="status" className={message.type === 'error' ? styles.error : styles.success} style={{ marginBottom: '1rem' }}>
+             {message.text} {message.type === 'error' && <button type="button" className={styles.secondaryButton} onClick={() => void loadCategoriesAndBrands()}>Retry</button>}
+           </div>
+         )}
+
+         {catalogLoading && <p className={styles.muted}>Loading product options…</p>}
 
         {!activeProduct && !isNewProduct && (
           <div className={styles.scannerSection}>
             <div className={styles.scannerRow}>
               <div className={styles.inputGroup}>
-                <label>Scan or Enter Barcode</label>
+                <label htmlFor="barcode-search">Scan or Enter Barcode</label>
                 <input 
+                  id="barcode-search"
                   type="text" 
                   value={barcodeInput} 
                   onChange={(e) => setBarcodeInput(e.target.value)}
@@ -319,7 +311,7 @@ const Inventory = () => {
               <p>Barcode: {activeProduct.barcode || 'N/A'}</p>
               <p>Current Stock: <strong>{activeProduct.current_stock}</strong></p>
               {activeProduct.image_url && (
-                <img src={activeProduct.image_url} alt="Product" className={styles.imagePreview} style={{ maxHeight: '150px' }} />
+                <img src={activeProduct.image_url} alt={`${activeProduct.name} product`} className={styles.imagePreview} style={{ maxHeight: '150px' }} />
               )}
             </div>
 
@@ -328,7 +320,7 @@ const Inventory = () => {
               <div className={styles.formGrid}>
                 <div className={styles.inputGroup}>
                   <label>Type</label>
-                  <select value={stockType} onChange={(e) => setStockType(e.target.value)}>
+                  <select value={stockType} onChange={(e) => setStockType(e.target.value as StockAdjustmentType)}>
                     {role !== 'technician' && <option value="receive">Receive (+)</option>}
                     {role !== 'technician' && <option value="sold">Sold (-)</option>}
                     <option value="used_for_repair">Used for Repair (-)</option>

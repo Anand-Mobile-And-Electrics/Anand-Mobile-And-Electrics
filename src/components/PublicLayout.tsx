@@ -5,8 +5,9 @@ import Footer from './Footer';
 const PublicLayout = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       <Navbar />
-      <main style={{ flex: 1 }}>
+      <main id="main-content" style={{ flex: 1 }}>
         <Outlet />
       </main>
       <Footer />

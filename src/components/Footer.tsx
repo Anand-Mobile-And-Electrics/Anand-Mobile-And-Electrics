@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
+
+const CURRENT_YEAR = new Date().getFullYear();
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
 
 const InstagramIcon = ({ size = 20, ...props }: React.SVGProps<SVGSVGElement> & { size?: number }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-label="Instagram" {...props}>
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
     <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
     <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
@@ -11,13 +13,13 @@ const InstagramIcon = ({ size = 20, ...props }: React.SVGProps<SVGSVGElement> & 
 );
 
 const FacebookIcon = ({ size = 20, ...props }: React.SVGProps<SVGSVGElement> & { size?: number }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-label="Facebook" {...props}>
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
   </svg>
 );
 
 const YouTubeIcon = ({ size = 20, ...props }: React.SVGProps<SVGSVGElement> & { size?: number }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-label="YouTube" {...props}>
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
     <path d="M2.5 7.1C2.1 8.4 2 10.2 2 12s.1 3.6.5 4.9a4 4 0 0 0 2.8 2.8C6.6 20 12 20 12 20s5.4 0 6.7-.3a4 4 0 0 0 2.8-2.8c.4-1.3.5-3.1.5-4.9s-.1-3.6-.5-4.9a4 4 0 0 0-2.8-2.8C17.4 4 12 4 12 4s-5.4 0-6.7.3a4 4 0 0 0-2.8 2.8z"/>
     <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
   </svg>
@@ -69,7 +71,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <Phone size={18} className={styles.icon} />
-                  <span>+91 97255 69604 <em>(Pending Owner Confirmation)</em></span>
+                  <span>+91 97255 69604</span>
                 </li>
                 <li>
                   <Mail size={18} className={styles.icon} />
@@ -77,7 +79,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <Clock size={18} className={styles.icon} />
-                  <span>Everyday: 7:30 AM - 10:00 PM<br/><em>(Pending Owner Confirmation)</em></span>
+                  <span>Everyday: 7:30 AM - 10:00 PM</span>
                 </li>
               </ul>
             </div>
@@ -104,7 +106,7 @@ const Footer = () => {
       
       <div className={styles.footerBottom}>
         <div className="container">
-          <p>&copy; {new Date().getFullYear()} Anand Mobile & Electrics. All Rights Reserved.</p>
+          <p>&copy; {CURRENT_YEAR} Anand Mobile & Electrics. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

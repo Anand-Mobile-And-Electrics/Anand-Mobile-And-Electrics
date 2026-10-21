@@ -1,30 +1,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --brand-red: #B31932;
-  --brand-blue: #0082CA;
-  --brand-cyan: #00B8E6;
-  --brand-red-dark: #8c1225;
-  --brand-blue-dark: #006299;
+  --brand-red: #b31932;
+  --brand-blue: #0077b6;
+  --brand-cyan: #00a9d6;
+  --brand-red-dark: #891226;
+  --brand-blue-dark: #00547f;
   
-  --text-dark: #4A4A4A;
-  --text-grey: #666666;
-  --text-light: #f5f5f5;
+  --text-dark: #182230;
+  --text-grey: #617083;
+  --text-light: #f7f9fc;
+  --text-muted: #7b8796;
+  --border: #dfe6ee;
+  --border-strong: #c8d3df;
   
-  --bg-main: #F8F9FA;
-  --bg-card: #FFFFFF;
-  --bg-gradient: linear-gradient(135deg, #ffffff 0%, #f0f4f8 100%);
+  --bg-main: #f4f7fb;
+  --bg-card: #ffffff;
+  --bg-gradient: linear-gradient(135deg, #ffffff 0%, #eef5fb 100%);
   
   --white: #FFFFFF;
   --black: #000000;
   
-  --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-  --shadow-lg: 0 15px 30px rgba(0,0,0,0.1);
+  --shadow-sm: 0 1px 3px rgba(24,34,48,.06), 0 1px 2px rgba(24,34,48,.04);
+  --shadow-md: 0 8px 24px rgba(24,34,48,.09);
+  --shadow-lg: 0 18px 48px rgba(24,34,48,.13);
   
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+  --content-width: 1200px;
 }
 
 * {
@@ -38,6 +43,7 @@ body {
   background-color: var(--bg-main);
   color: var(--text-dark);
   line-height: 1.6;
+  min-width: 320px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -58,7 +64,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: var(--content-width);
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -67,12 +73,13 @@ h1, h2, h3, h4, h5, h6 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 28px;
+  min-height: 44px;
+  padding: 11px 22px;
   border-radius: var(--radius-md);
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform .2s ease, background-color .2s ease, box-shadow .2s ease, border-color .2s ease;
   border: none;
 }
 
@@ -84,11 +91,12 @@ h1, h2, h3, h4, h5, h6 {
 .btn-primary {
   background-color: var(--brand-red);
   color: var(--white);
+  box-shadow: 0 5px 14px rgba(179,25,50,.18);
 }
 
 .btn-primary:hover {
   background-color: var(--brand-red-dark);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
 
@@ -107,6 +115,21 @@ h1, h2, h3, h4, h5, h6 {
   background-color: transparent;
   color: var(--brand-red);
   border: 2px solid var(--brand-red);
+}
+
+button, input, select, textarea { font: inherit; }
+button:disabled { cursor: not-allowed; opacity: .58; transform: none !important; }
+input, select, textarea {
+  color: var(--text-dark);
+  background: var(--white);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: var(--brand-blue);
+  box-shadow: 0 0 0 3px rgba(0,119,182,.14);
+  outline: 0;
 }
 
 .btn-outline:hover {
@@ -132,7 +155,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 section {
-  padding: 80px 0;
+  padding: clamp(56px, 8vw, 88px) 0;
 }
 
 /* Animations */
@@ -143,4 +166,42 @@ section {
 
 .animate-fade-in {
   animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Skip-to-content link for keyboard/screen-reader users */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1000;
+  background: var(--brand-red);
+  color: var(--white);
+  padding: 0.75rem 1rem;
+  border-radius: 0 0 var(--radius-sm) 0;
+  font-weight: 600;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-fade-in {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .container { padding-inline: 18px; }
+  .section-title { font-size: 2rem; }
+  .section-subtitle { font-size: 1rem; margin-bottom: 2rem; }
+  .btn { width: 100%; }
 }

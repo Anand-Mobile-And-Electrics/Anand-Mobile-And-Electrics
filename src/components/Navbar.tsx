@@ -1,13 +1,22 @@
 import { Link, NavLink } from 'react-router-dom';
 import styles from './Navbar.module.css';
 import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setIsOpen(false);
+    };
+    document.addEventListener('keydown', closeOnEscape);
+    return () => document.removeEventListener('keydown', closeOnEscape);
+  }, [isOpen]);
+
   return (
-    <nav className={styles.navbar}>
+      <nav className={styles.navbar} aria-label="Primary navigation">
       <div className={styles.navContainer}>
         <Link to="/" className={styles.brand}>
           <img src="/logo.jpg" alt="Anand Mobile & Electrics" className={styles.logo} />

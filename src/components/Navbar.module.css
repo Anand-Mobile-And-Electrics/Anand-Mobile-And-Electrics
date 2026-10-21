@@ -1,10 +1,12 @@
 .navbar {
-  background-color: var(--white);
-  padding: 15px 5%;
+  background: rgba(255,255,255,.94);
+  padding: 10px 5%;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+  border-bottom: 1px solid rgba(223,230,238,.85);
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(14px);
 }
 
 .navContainer {
@@ -13,6 +15,7 @@
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
+  min-height: 58px;
 }
 
 .brand {
@@ -22,7 +25,7 @@
 }
 
 .logo {
-  height: 55px;
+  height: 48px;
   width: auto;
   border-radius: var(--radius-sm);
   object-fit: contain;
@@ -51,19 +54,22 @@
 .navLinks {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 8px;
 }
 
 .navLinks a {
   font-weight: 600;
   font-size: 0.95rem;
   color: var(--text-dark);
-  transition: color 0.2s ease;
+  transition: color .2s ease, background-color .2s ease;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
 }
 
 .navLinks a:hover,
 .navLinks a.activeLink {
   color: var(--brand-red);
+  background: #fff1f3;
 }
 
 .menuIcon {
@@ -72,8 +78,10 @@
   color: var(--text-dark);
   background: transparent;
   border: none;
-  padding: 0;
+  padding: 9px;
+  border-radius: var(--radius-md);
 }
+.menuIcon:hover { background: #eef5fb; }
 
 @media (max-width: 768px) {
   .menuIcon {
@@ -88,9 +96,9 @@
     background-color: var(--white);
     flex-direction: column;
     align-items: center;
-    padding: 30px 0;
-    gap: 25px;
-    box-shadow: 0 10px 15px rgba(0,0,0,0.05);
+    padding: 18px;
+    gap: 8px;
+    box-shadow: var(--shadow-md);
     clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
     transition: all 0.3s ease-out;
   }
@@ -98,4 +106,6 @@
   .navLinks.active {
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }
+  .navLinks li, .navLinks a { width: 100%; text-align: center; }
+  .navLinks .btn { margin-top: 6px; }
 }

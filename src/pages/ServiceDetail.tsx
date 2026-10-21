@@ -11,7 +11,7 @@ const ServiceDetail = () => {
     return (
       <div className="container" style={{ padding: '6rem 1rem', textAlign: 'center' }}>
         <SEO title="Service Not Found" />
-        <h2>Service Not Found</h2>
+        <h1>Service Not Found</h1>
         <p>The service you are looking for does not exist.</p>
         <Link to="/services" className="btn btn-primary" style={{ marginTop: '1rem', display: 'inline-block' }}>Back to Services</Link>
       </div>

@@ -1,0 +1,19 @@
+.adminShell { min-height: 100vh; background: var(--bg-main); color: var(--text-dark); }
+.adminHeader { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .75rem clamp(1rem, 4vw, 2.5rem); background: rgba(255,255,255,.96); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+.adminBrand, .adminHeaderActions, .adminNavLink, .adminLogout { display: flex; align-items: center; }
+.adminBrand { gap: .7rem; }
+.adminBrandMark { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--brand-red); color: #fff; font-weight: 800; font-size: 1.2rem; box-shadow: 0 5px 14px rgba(179,25,50,.2); }
+.adminBrand strong, .adminBrand small { display: block; }
+.adminBrand small { color: #64748b; font-size: .75rem; margin-top: .15rem; }
+.adminHeaderActions { gap: 1rem; }
+.adminRole { color: #475569; font-size: .8rem; text-transform: capitalize; }
+.adminLogout { gap: .4rem; border: 0; background: transparent; color: #475569; cursor: pointer; padding: .5rem; }
+.adminLogout:hover { color: #b91c36; }
+.adminNav { display: flex; gap: .35rem; padding: .55rem clamp(1rem, 4vw, 2.5rem); background: #fff; border-bottom: 1px solid var(--border); overflow-x: auto; }
+.adminNavLink { gap: .5rem; padding: .65rem .85rem; border-radius: .5rem; color: #475569; text-decoration: none; white-space: nowrap; font-size: .92rem; }
+.adminNavLink:hover, .adminNavLink.active { background: #fff1f3; color: var(--brand-red); }
+.adminMain { padding: 1.25rem clamp(1rem, 4vw, 2.5rem) 5rem; max-width: 1250px; margin: 0 auto; }
+.adminBreadcrumb { color: #64748b; font-size: .78rem; text-transform: capitalize; margin-bottom: 1rem; }
+.adminAccessDenied { min-height: 100vh; display: grid; place-content: center; gap: .75rem; padding: 2rem; text-align: center; }
+.adminAccessDenied button { justify-self: center; padding: .65rem 1rem; border: 0; border-radius: .5rem; background: #b91c36; color: white; cursor: pointer; }
+@media (max-width: 560px) { .adminHeader { align-items: flex-start; position: sticky; top: 0; z-index: 5; } .adminBrand strong { font-size: .9rem; } .adminBrand small, .adminRole { display: none; } .adminLogout span { display: none; } .adminMain { padding: 1rem .75rem 5rem; } .adminNav { position: sticky; top: 68px; z-index: 4; justify-content: space-between; } .adminNavLink { flex: 1; justify-content: center; min-height: 44px; } }

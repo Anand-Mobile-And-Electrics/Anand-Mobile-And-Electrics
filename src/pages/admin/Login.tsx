@@ -19,19 +19,28 @@ const Login = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!/^\S+@\S+\.\S+$/.test(normalizedEmail)) {
+      setError('Enter a valid staff email address.');
+      return;
+    }
+    if (!password) {
+      setError('Enter your password.');
+      return;
+    }
     setLoading(true);
     setError('');
 
     try {
       const { error } = await supabase.auth.signInWithPassword({
-        email,
+        email: normalizedEmail,
         password,
       });
 
       if (error) throw error;
       navigate('/admin');
     } catch (err: any) {
-      setError(err.message || 'Failed to login');
+      setError(err?.message === 'Invalid login credentials' ? 'Email or password is incorrect.' : (err?.message || 'Unable to sign in. Please try again.'));
     } finally {
       setLoading(false);
     }
@@ -54,6 +63,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoComplete="email"
               disabled={loading}
             />
           </div>
@@ -66,6 +76,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              autoComplete="current-password"
               disabled={loading}
             />
           </div>

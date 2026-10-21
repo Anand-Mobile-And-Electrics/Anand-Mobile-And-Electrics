@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 // Load .env manually because dotenv is not installed and Node doesn't do it automatically
-const envPath = path.resolve('.env');
+const envPath = path.resolve('.env.local');
 if (fs.existsSync(envPath)) {
   const envFile = fs.readFileSync(envPath, 'utf8');
   envFile.split('\n').forEach(line => {
@@ -18,9 +18,14 @@ if (fs.existsSync(envPath)) {
   });
 }
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL || 'http://127.0.0.1:54321';
-const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || 'dummy';
+const supabaseUrl = process.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY;
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!supabaseUrl) {
+  console.error("❌ ERROR: VITE_SUPABASE_URL is not available. Production verification cannot continue.");
+  process.exit(1);
+}
 
 if (!serviceRoleKey) {
   console.error("❌ ERROR: SUPABASE_SERVICE_ROLE_KEY is missing.");
@@ -49,6 +54,44 @@ function assertCheck(condition, successMsg, failMsg, errorDetails = null) {
 
 async function runTests() {
   console.log("=== PHASE 2C LIVE VERIFICATION STARTED ===\n");
+
+  console.log(`Supabase URL: ${supabaseUrl}`);
+
+  // Safe Credential Diagnostics
+  const keyLength = serviceRoleKey ? serviceRoleKey.length : 0;
+  const isJwt = serviceRoleKey ? (serviceRoleKey.split('.').length === 3 && serviceRoleKey.startsWith('eyJ')) : false;
+  const prefix = serviceRoleKey ? serviceRoleKey.substring(0, 10) : 'none';
+  console.log(`Credential present: ${serviceRoleKey ? 'YES' : 'NO'}`);
+  console.log(`Credential length: ${keyLength}`);
+  console.log(`Credential prefix: ${prefix}...`);
+  console.log(`JWT structure: ${isJwt ? 'YES' : 'NO'}`);
+
+  if (isJwt) {
+    try {
+      const payload = JSON.parse(Buffer.from(serviceRoleKey.split('.')[1], 'base64').toString('utf8'));
+      console.log(`JWT Role Claim: ${payload.role}`);
+      if (payload.role !== 'service_role') {
+        console.error(`\n❌ ERROR: You provided the '${payload.role}' key instead of the 'service_role' key. Setup will fail because RLS is not bypassed.`);
+        process.exit(1);
+      }
+    } catch (e) {
+      console.log(`JWT Role Claim: UNKNOWN (failed to parse)`);
+    }
+  }
+  console.log('');
+
+  if (supabaseUrl.includes('127.0.0.1') || supabaseUrl.includes('localhost')) {
+    console.error("❌ ERROR: Target URL is localhost. Refusing to run live verification against local database.");
+    process.exit(1);
+  }
+
+  // Safe connection check
+  const { data: health, error: healthErr } = await adminClient.from('profiles').select('id').limit(1);
+  if (healthErr) {
+    console.error("❌ ERROR: Could not connect to remote Supabase project.", healthErr.message);
+    process.exit(1);
+  }
+  console.log("✅ PASS: Successfully connected to remote Supabase project.\n");
 
   const suffix = Date.now();
   
@@ -116,8 +159,9 @@ async function runTests() {
     const { error: anonUploadError } = await anonClient.storage.from('product-images').upload(`anon_${suffix}.jpg`, dummyImage);
     assertCheck(anonUploadError, "7. Anonymous upload safely blocked", "Anonymous bypass!");
 
-    const { error: techDeleteError } = await technicianClient.storage.from('product-images').remove([ownerFileName]);
-    assertCheck(techDeleteError, "8. Unauthorized delete blocked", "Technician was able to delete owner's image!");
+    const { data: techDeleteData, error: techDeleteError } = await technicianClient.storage.from('product-images').remove([ownerFileName]);
+    const actuallyDeleted = techDeleteData && techDeleteData.length > 0;
+    assertCheck(!actuallyDeleted, "8. Unauthorized delete blocked", "Technician was able to delete owner's image!");
 
 
     // 3. Inventory UI / Barcode Workflows

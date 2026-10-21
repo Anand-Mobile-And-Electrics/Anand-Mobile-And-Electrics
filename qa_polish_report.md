@@ -14,13 +14,13 @@
 - The command `npm run build` completed successfully without any warnings or errors. (0 TypeScript errors, successful Vite bundling).
 
 ## 4. Any remaining issues
-- The project still lacks real inventory data on the Products page (currently gracefully handling this with a scalable architecture, but actual stock needs to be provided).
-- There is no live interactive map on the contact page yet; it requires a valid Google Maps embed snippet or API key.
-- Social media links in the footer are absent (can be added once the official accounts are provided).
+- The Products page remains an honest “Coming Soon” placeholder until real inventory data is entered and the proposed public catalog view is approved.
+- The Contact page uses an external Google Maps search link; an embedded interactive map would require an owner-approved embed/provider decision.
+- Footer social links are present for the currently recorded Instagram, Facebook, and YouTube accounts; their destinations still require owner verification.
 
 ## 5. Recommended next development phase
-**Backend & Dynamic Content Phase.**
-With the frontend completely polished and structurally sound, the immediate next phase should be:
-1. Setting up Firebase (or another backend) for real-time shop status.
-2. Developing the **Admin Panel** to give the shop owner control over store timings and special announcements.
-3. Connecting the customer-facing website to this backend to pull live data.
+**Owner-approved content and staging verification.**
+The app already uses Supabase for the authenticated staff workflows. The next customer-site work should wait for:
+1. Owner-approved product data and the proposed public catalog view.
+2. Owner verification of the recorded contact and social destinations.
+3. Browser/device staging checks for routing, PWA install/offline behavior, and responsive navigation.

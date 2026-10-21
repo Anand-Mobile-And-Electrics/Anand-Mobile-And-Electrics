@@ -40,6 +40,29 @@ const Dashboard = () => {
           </Link>
         </div>
       </div>
+      <div className={styles.contentCard}>
+        <h2>Repair Management</h2>
+        <p>Register customers and devices, create repair jobs, assign technicians, track status, and manage repair photos.</p>
+        <div style={{ marginTop: '1rem' }}>
+          <Link to="/admin/repairs" className={styles.logoutButton} style={{ textDecoration: 'none', display: 'inline-block' }}>
+            Open Repairs
+          </Link>
+        </div>
+      </div>
+      {(role === 'owner' || role === 'manager') && (
+        <div className={styles.contentCard}>
+          <h2>Spin the Wheel &amp; Customer Offers</h2>
+          <p>Spin the wheel to award offers to visiting customers, manage the active wheel offers, and track issued coupons with 30-day validity.</p>
+          <div style={{ marginTop: '1rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <Link to="/admin/spin-wheel" className={styles.logoutButton} style={{ textDecoration: 'none', display: 'inline-block', backgroundColor: 'var(--brand-red)', color: 'white', borderColor: 'var(--brand-red)' }}>
+              Spin the Wheel
+            </Link>
+            <Link to="/admin/spin-wheel/offers" className={styles.logoutButton} style={{ textDecoration: 'none', display: 'inline-block' }}>
+              Manage Offers
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
